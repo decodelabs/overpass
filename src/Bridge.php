@@ -131,12 +131,12 @@ class Bridge
             return $this;
         }
 
-        $result = Systemic::$process->newLauncher((string)$this->getNpmPath(), [
+        $result = Systemic::$process->newLauncher($this->getNpmPath(), [
                 '--loglevel=error',
                 'install',
                 $packageName
             ])
-            ->setWorkingDirectory((string)$this->installDir)
+            ->setWorkingDirectory($this->installDir)
             ->setSession($this->io)
             ->launch();
 
@@ -176,10 +176,10 @@ class Bridge
             'delineator' => $delineator
         ]);
 
-        $result = Systemic::$process->newLauncher((string)$this->getNodePath(), [
+        $result = Systemic::$process->newLauncher($this->getNodePath(), [
                 __DIR__ . '/evaluate.js'
             ])
-            ->setWorkingDirectory((string)$this->installDir)
+            ->setWorkingDirectory($this->installDir)
             ->setDecoratable(false)
             ->setInputGenerator(function () use ($payload) {
                 return $payload;
