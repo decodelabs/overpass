@@ -1,3 +1,6 @@
+## v0.1.2 (2022-11-18)
+* Added node_module path in evaluator
+
 ## v0.1.1 (2022-11-18)
 * Updated Systemic dependency
 
