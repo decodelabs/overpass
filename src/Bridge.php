@@ -15,7 +15,6 @@ use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Systemic;
-use DecodeLabs\Terminus;
 use DecodeLabs\Terminus\Session;
 
 class Bridge
@@ -23,8 +22,9 @@ class Bridge
     protected Dir $installDir;
     protected File $nodeBin;
     protected File $npmBin;
+    protected ?string $user = null;
 
-    protected Session $io;
+    protected ?Session $io = null;
 
     /**
      * Init with path and session
@@ -43,7 +43,7 @@ class Bridge
 
 
         // Terminus
-        $this->io = $session ?? Terminus::getSession();
+        $this->io = $session;
     }
 
 
@@ -119,6 +119,26 @@ class Bridge
     }
 
 
+    /**
+     * Set user
+     *
+     * @return $this
+     */
+    public function setUser(?string $user): static
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Get user
+     */
+    public function getUser(): ?string
+    {
+        return $this->user;
+    }
+
+
 
     /**
      * Ensure a package is installed
@@ -127,7 +147,9 @@ class Bridge
      */
     public function ensurePackage(string $packageName): static
     {
-        if ($this->installDir->getFile('node_modules/' . $packageName . '/package.json')->exists()) {
+        $packageFile = $this->installDir->getFile('node_modules/' . $packageName . '/package.json');
+
+        if ($packageFile->exists()) {
             return $this;
         }
 
@@ -146,6 +168,12 @@ class Bridge
             );
         }
 
+        /** @phpstan-ignore-next-line */
+        if (!$packageFile->exists()) {
+            throw Exceptional::Runtime('NPM install failed: ' . $packageName, null, $result->getOutput());
+        }
+
+        /** @phpstan-ignore-next-line */
         return $this;
     }
 
@@ -176,10 +204,9 @@ class Bridge
             'delineator' => $delineator
         ]);
 
-        $result = Systemic::$process->newLauncher($this->getNodePath(), [
-                __DIR__ . '/evaluate.js'
-            ])
+        $result = Systemic::$process->newLauncher($this->getNodePath(), [__DIR__ . '/evaluate.js'])
             ->setWorkingDirectory($this->installDir)
+            ->setUser($this->user)
             ->setDecoratable(false)
             ->setInputGenerator(function () use ($payload) {
                 return $payload;
