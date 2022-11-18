@@ -168,10 +168,12 @@ class Bridge
             );
         }
 
+        /** @phpstan-ignore-next-line */
         if (!$packageFile->exists()) {
-            throw Exceptiona::Runtime('NPM install failed: '.$packageName, null, $result->getOutput());
+            throw Exceptional::Runtime('NPM install failed: ' . $packageName, null, $result->getOutput());
         }
 
+        /** @phpstan-ignore-next-line */
         return $this;
     }
 
