@@ -1,3 +1,5 @@
+* Migrated to use effigy in CI workflow
+
 ## v0.1.2 (2022-11-18)
 * Added node_module path in evaluator
 
