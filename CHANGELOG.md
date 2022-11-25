@@ -1,3 +1,4 @@
+## v0.2.0 (2022-11-25)
 * Added Veneer Context controller
 * Added full node and npm interaction
 * Added package file detection
