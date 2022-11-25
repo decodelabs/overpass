@@ -1,3 +1,6 @@
+* Added Veneer Context controller
+* Added full node and npm interaction
+* Added package file detection
 * Migrated to use effigy in CI workflow
 
 ## v0.1.2 (2022-11-18)

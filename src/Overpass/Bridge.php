@@ -19,27 +19,27 @@ use DecodeLabs\Terminus\Session;
 
 class Bridge
 {
-    protected Dir $installDir;
-    protected File $nodeBin;
-    protected File $npmBin;
-    protected ?string $user = null;
-
     protected ?Session $io = null;
+    protected Context $context;
 
     /**
      * Init with path and session
      */
     public function __construct(
-        string|Dir $installPath,
+        string|Dir|Context $context,
         ?Session $session = null
     ) {
         // Install path
-        if (!$installPath instanceof Dir) {
-            $installPath = Atlas::dir($installPath);
+        if (!$context instanceof Context) {
+            if (!$context instanceof Dir) {
+                $context = Atlas::dir($context);
+            }
+
+            $context = new Context($context);
         }
 
-        $this->installDir = $installPath;
-        $this->installDir->ensureExists();
+        $this->context = $context;
+        $this->context->rootDir->ensureExists();
 
 
         // Terminus
@@ -55,17 +55,7 @@ class Bridge
     public function setNodePath(
         string|File $path
     ): static {
-        if (!$path instanceof File) {
-            $path = Atlas::file($path);
-        }
-
-        if ($path->getPath() === 'node') {
-            $path = Atlas::file((string)Systemic::$os->which('node'));
-        } elseif (!$path->exists()) {
-            throw Exceptional::Setup('Node binary could not be found');
-        }
-
-        $this->nodeBin = $path;
+        $this->context->setNodePath($path);
         return $this;
     }
 
@@ -75,11 +65,7 @@ class Bridge
      */
     public function getNodePath(): File
     {
-        if (!isset($this->nodeBin)) {
-            $this->setNodePath('node');
-        }
-
-        return $this->nodeBin;
+        return $this->context->getNodePath();
     }
 
 
@@ -91,17 +77,7 @@ class Bridge
     public function setNpmPath(
         string|File $path
     ): static {
-        if (!$path instanceof File) {
-            $path = Atlas::file($path);
-        }
-
-        if ($path->getPath() === 'npm') {
-            $path = Atlas::file((string)Systemic::$os->which('npm'));
-        } elseif (!$path->exists()) {
-            throw Exceptional::Setup('NPM binary could not be found');
-        }
-
-        $this->npmBin = $path;
+        $this->context->setNpmPath($path);
         return $this;
     }
 
@@ -111,31 +87,7 @@ class Bridge
      */
     public function getNpmPath(): File
     {
-        if (!isset($this->npmBin)) {
-            $this->setNpmPath('npm');
-        }
-
-        return $this->npmBin;
-    }
-
-
-    /**
-     * Set user
-     *
-     * @return $this
-     */
-    public function setUser(?string $user): static
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * Get user
-     */
-    public function getUser(): ?string
-    {
-        return $this->user;
+        return $this->context->getNpmPath();
     }
 
 
@@ -147,30 +99,17 @@ class Bridge
      */
     public function ensurePackage(string $packageName): static
     {
-        $packageFile = $this->installDir->getFile('node_modules/' . $packageName . '/package.json');
+        $packageFile = $this->context->rootDir->getFile('node_modules/' . $packageName . '/package.json');
 
         if ($packageFile->exists()) {
             return $this;
         }
 
-        $result = Systemic::$process->newLauncher($this->getNpmPath(), [
-                '--loglevel=error',
-                'install',
-                $packageName
-            ])
-            ->setWorkingDirectory($this->installDir)
-            ->setSession($this->io)
-            ->launch();
-
-        if ($result->hasError()) {
-            throw Exceptional::Runtime(
-                $result->getError()
-            );
-        }
+        $this->context->install($packageName);
 
         /** @phpstan-ignore-next-line */
         if (!$packageFile->exists()) {
-            throw Exceptional::Runtime('NPM install failed: ' . $packageName, null, $result->getOutput());
+            throw Exceptional::Runtime('NPM install failed: ' . $packageName);
         }
 
         /** @phpstan-ignore-next-line */
@@ -205,8 +144,7 @@ class Bridge
         ]);
 
         $result = Systemic::$process->newLauncher($this->getNodePath(), [__DIR__ . '/evaluate.js'])
-            ->setWorkingDirectory($this->installDir)
-            ->setUser($this->user)
+            ->setWorkingDirectory($this->context->rootDir)
             ->setDecoratable(false)
             ->setInputGenerator(function () use ($payload) {
                 return $payload;
@@ -248,9 +186,9 @@ class Bridge
      */
     public function purge(): static
     {
-        $this->installDir->getFile('package.json')->delete();
-        $this->installDir->getFile('package-lock.json')->delete();
-        $this->installDir->getDir('node_modules')->delete();
+        $this->context->rootDir->getFile('package.json')->delete();
+        $this->context->rootDir->getFile('package-lock.json')->delete();
+        $this->context->rootDir->getDir('node_modules')->delete();
 
         return $this;
     }

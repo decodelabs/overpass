@@ -22,12 +22,15 @@
     },
     "autoload": {
         "psr-4": {
-            "DecodeLabs\\Overpass\\": "src/"
-        }
+            "DecodeLabs\\Overpass\\": "src/Overpass/"
+        },
+        "files": [
+            "src/global.php"
+        ]
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.1.x-dev"
+            "dev-develop": "0.2.x-dev"
         }
     }
 }
