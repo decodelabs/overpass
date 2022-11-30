@@ -13,7 +13,6 @@ use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\Dir;
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
-use DecodeLabs\Glitch\Proxy as Glitch;
 use DecodeLabs\Systemic;
 use DecodeLabs\Terminus\Session;
 
@@ -143,30 +142,23 @@ class Bridge
             'delineator' => $delineator
         ]);
 
-        $result = Systemic::$process->newLauncher($this->getNodePath(), [__DIR__ . '/evaluate.js'])
-            ->setWorkingDirectory($this->context->rootDir)
-            ->setDecoratable(false)
-            ->setInputGenerator(function () use ($payload) {
-                return $payload;
-            })
-            ->launch();
 
-        $output = $result->getOutput();
-
-        if (
-            $result->hasError() &&
-            empty($output)
-        ) {
-            $error = (string)$result->getError();
-            $e = Exceptional::Runtime($error);
-
-            if (!preg_match('/deprecat/i', $error)) {
-                throw $e;
-            } else {
-                Glitch::logException($e);
+        $result = Systemic::start(
+            [(string)$this->getNodePath(), __DIR__ . '/evaluate.js'],
+            $this->context->rootDir,
+            function ($controller) use ($payload) {
+                yield $payload;
+                $controller->closeInput();
+                yield from $controller->capture();
             }
+        );
+
+        if (!$result->wasSuccessful()) {
+            $error = (string)($result->getError() ?? 'Unknown error');
+            throw Exceptional::Runtime($error);
         }
 
+        $output = $result->getOutput();
         $parts = explode($delineator, (string)$output);
 
         if (empty($output = array_pop($parts))) {

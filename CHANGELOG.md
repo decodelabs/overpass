@@ -1,3 +1,5 @@
+* Switched to Systemic v0.11
+
 ## v0.2.1 (2022-11-25)
 * Removed quotes from install package defs
 

@@ -14,7 +14,6 @@ use DecodeLabs\Atlas\Dir;
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Systemic;
-use DecodeLabs\Terminus;
 use DecodeLabs\Terminus\Session;
 use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
@@ -190,14 +189,10 @@ class Context
         string $name,
         string ...$args
     ): bool {
-        return Systemic::$process->newLauncher(
-            $this->getNodePath(),
-            [$name, ...$args]
-        )
-            ->setWorkingDirectory($this->rootDir)
-            ->setSession($this->io ?? Terminus::getSession())
-            ->launch()
-            ->wasSuccessful();
+        return Systemic::run(
+            [(string)$this->getNodePath(), $name, ...$args],
+            $this->rootDir
+        );
     }
 
 
@@ -208,14 +203,10 @@ class Context
         string $name,
         string ...$args
     ): bool {
-        return Systemic::$process->newLauncher(
-            $this->getNpmPath(),
-            ['run', $name, ...$args]
-        )
-            ->setWorkingDirectory($this->rootDir)
-            ->setSession($this->io ?? Terminus::getSession())
-            ->launch()
-            ->wasSuccessful();
+        return Systemic::run(
+            [(string)$this->getNpmPath(), 'run', $name, ...$args],
+            $this->rootDir
+        );
     }
 
 
@@ -226,15 +217,10 @@ class Context
         string $name,
         string ...$args
     ): bool {
-        return Systemic::$process->newLauncher(
-            $this->getNpmPath(),
-            ['run', $name, ...$args]
-        )
+        return Systemic::command([(string)$this->getNpmPath(), 'run', $name, ...$args])
             ->setWorkingDirectory($this->rootDir)
-            ->setSession($this->io ?? Terminus::getSession())
             ->addSignal('SIGINT', 'SIGTERM', 'SIGQUIT')
-            ->launch()
-            ->wasSuccessful();
+            ->run();
     }
 
 
@@ -308,14 +294,9 @@ class Context
         string $name,
         string ...$args
     ): bool {
-        return Systemic::$process->newLauncher($this->getNpmPath(), [
-                '--loglevel=error',
-                $name,
-                ...$args
-            ])
-            ->setWorkingDirectory($this->rootDir)
-            ->setSession($this->io ?? Terminus::getSession())
-            ->launch()
-            ->wasSuccessful();
+        return Systemic::run(
+            [(string)$this->getNpmPath(), '--loglevel=error', $name, ...$args],
+            $this->rootDir
+        );
     }
 }
