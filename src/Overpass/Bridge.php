@@ -166,7 +166,7 @@ class Bridge
         }
 
         /** @var array<string, mixed> */
-        $output = json_decode($output, true);
+        $output = json_decode($output, true, 512, \JSON_THROW_ON_ERROR);
         return $output['result'] ?? null;
     }
 
