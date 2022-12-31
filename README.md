@@ -24,7 +24,48 @@ composer require decodelabs/overpass
 
 ## Usage
 
-Coming soon...
+Load a context to work from:
+
+```php
+use DecodeLabs\Overpass\Context;
+
+$context = new Context('path/to/project/');
+```
+
+Or use the `Overpass` Veneer frontage to work from `cwd()`.
+Overpass will search back up the file tree for the nearest package.json.
+
+
+```php
+use DecodeLabs\Overpass;
+
+echo Overpass::$runDir; // Working directory
+echo Overpass::$rootDir; // Parent or current dir containing package.json
+echo Overpass::$packageFile; // Location  of package.json
+
+Overpass::run('myfile.js'); // node myfile.js
+Overpass::runScript('my-script'); // npm run my-script
+
+Overpass::install('package1', 'package2'); // npm install package1 package2
+Overpass::installDev('package1', 'package2'); // npm install package1 package2 --save-dev
+```
+
+### Bridging
+
+Overpass offers a simple Bridge system to allow you to define custom javascript, pass arguments to it, and consume the result via node.
+
+```javascript
+// myfile.js
+module.exports = function(input) {
+    return 'hello ' + input;
+}
+```
+
+```php
+use DecodeLabs\Overpass;
+
+$result = Overpass::bridge('myfile.js', 'world'); // 'hello world'
+```
 
 ## Licensing
 Overpass is licensed under the MIT License. See [LICENSE](./LICENSE) for the full license text.
