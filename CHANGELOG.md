@@ -1,3 +1,4 @@
+## v0.2.3 (2023-09-11)
 * Throw error on invalid json in bridge
 * Added npx support
 
