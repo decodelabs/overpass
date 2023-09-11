@@ -17,7 +17,7 @@ class Overpass implements Proxy
 {
     use ProxyTrait;
 
-    const VENEER = 'DecodeLabs\Overpass';
+    const VENEER = 'DecodeLabs\\Overpass';
     const VENEER_TARGET = Inst::class;
 
     public static Inst $instance;
@@ -45,6 +45,12 @@ class Overpass implements Proxy
     }
     public static function getNpmPath(): PackageFilePlugin {
         return static::$instance->getNpmPath();
+    }
+    public static function setNpxPath(PackageFilePlugin|string $path): Inst {
+        return static::$instance->setNpxPath(...func_get_args());
+    }
+    public static function getNpxPath(): PackageFilePlugin {
+        return static::$instance->getNpxPath();
     }
     public static function run(string $name, string ...$args): bool {
         return static::$instance->run(...func_get_args());
@@ -75,5 +81,8 @@ class Overpass implements Proxy
     }
     public static function runNpm(string $name, string ...$args): bool {
         return static::$instance->runNpm(...func_get_args());
+    }
+    public static function runNpx(string $name, string ...$args): bool {
+        return static::$instance->runNpx(...func_get_args());
     }
 };

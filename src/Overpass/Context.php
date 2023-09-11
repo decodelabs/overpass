@@ -32,6 +32,7 @@ class Context
 
     protected File $nodeBin;
     protected File $npmBin;
+    protected File $npxBin;
 
     protected ?Session $io = null;
 
@@ -168,7 +169,6 @@ class Context
         return $this;
     }
 
-
     /**
      * Get npm path
      */
@@ -179,6 +179,42 @@ class Context
         }
 
         return $this->npmBin;
+    }
+
+
+
+    /**
+     * Set npx path
+     *
+     * @return $this
+     */
+    public function setNpxPath(
+        string|File $path
+    ): static {
+        if (!$path instanceof File) {
+            $path = Atlas::file($path);
+        }
+
+        if ($path->getPath() === 'npx') {
+            $path = Atlas::file((string)Systemic::$os->which('npx'));
+        } elseif (!$path->exists()) {
+            throw Exceptional::Setup('NPX binary could not be found');
+        }
+
+        $this->npxBin = $path;
+        return $this;
+    }
+
+    /**
+     * Get npx path
+     */
+    public function getNpxPath(): File
+    {
+        if (!isset($this->npxBin)) {
+            $this->setNpxPath('npx');
+        }
+
+        return $this->npxBin;
     }
 
 
@@ -296,6 +332,17 @@ class Context
     ): bool {
         return Systemic::run(
             [(string)$this->getNpmPath(), '--loglevel=error', $name, ...$args],
+            $this->rootDir
+        );
+    }
+
+
+    public function runNpx(
+        string $name,
+        string ...$args
+    ): bool {
+        return Systemic::run(
+            [(string)$this->getNpxPath(), $name, ...$args],
             $this->rootDir
         );
     }

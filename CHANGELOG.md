@@ -1,3 +1,7 @@
+## v0.2.3 (2023-09-11)
+* Throw error on invalid json in bridge
+* Added npx support
+
 ## v0.2.2 (2022-11-30)
 * Switched to Systemic v0.11
 
