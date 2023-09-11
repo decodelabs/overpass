@@ -46,6 +46,12 @@ class Overpass implements Proxy
     public static function getNpmPath(): PackageFilePlugin {
         return static::$instance->getNpmPath();
     }
+    public static function setNpxPath(PackageFilePlugin|string $path): Inst {
+        return static::$instance->setNpxPath(...func_get_args());
+    }
+    public static function getNpxPath(): PackageFilePlugin {
+        return static::$instance->getNpxPath();
+    }
     public static function run(string $name, string ...$args): bool {
         return static::$instance->run(...func_get_args());
     }
@@ -75,5 +81,8 @@ class Overpass implements Proxy
     }
     public static function runNpm(string $name, string ...$args): bool {
         return static::$instance->runNpm(...func_get_args());
+    }
+    public static function runNpx(string $name, string ...$args): bool {
+        return static::$instance->runNpx(...func_get_args());
     }
 };
