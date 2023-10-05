@@ -1,3 +1,4 @@
+## v0.2.4 (2023-10-05)
 * Updated Terminus dependency
 
 ## v0.2.3 (2023-09-11)
