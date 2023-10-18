@@ -22,10 +22,10 @@
     },
     "autoload": {
         "psr-4": {
-            "DecodeLabs\\Overpass\\": "src/Overpass/"
+            "DecodeLabs\\Overpass\\": "src/"
         },
         "files": [
-            "src/global.php"
+            "src/Context.php"
         ]
     },
     "extra": {

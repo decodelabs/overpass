@@ -13,8 +13,10 @@ use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\Dir;
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
+use DecodeLabs\Overpass;
 use DecodeLabs\Systemic;
 use DecodeLabs\Terminus\Session;
+use DecodeLabs\Veneer;
 use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
 
@@ -347,3 +349,7 @@ class Context
         );
     }
 }
+
+
+// Register the Veneer facade
+Veneer::register(Context::class, Overpass::class);
