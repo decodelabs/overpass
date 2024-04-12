@@ -1,3 +1,8 @@
+## v0.2.6 (2024-04-12)
+* Added support for async modules in bridge evaluate
+* Made PHP8.1 minimum version
+* Refactored package file structure
+
 ## v0.2.5 (2023-10-16)
 * Updated Atlas dependency
 

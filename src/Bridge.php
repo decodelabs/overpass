@@ -96,8 +96,9 @@ class Bridge
      *
      * @return $this
      */
-    public function ensurePackage(string $packageName): static
-    {
+    public function ensurePackage(
+        string $packageName
+    ): static {
         $packageFile = $this->context->rootDir->getFile('node_modules/' . $packageName . '/package.json');
 
         if ($packageFile->exists()) {

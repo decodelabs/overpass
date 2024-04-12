@@ -13,8 +13,10 @@ use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\Dir;
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
+use DecodeLabs\Overpass;
 use DecodeLabs\Systemic;
 use DecodeLabs\Terminus\Session;
+use DecodeLabs\Veneer;
 use DecodeLabs\Veneer\LazyLoad;
 use DecodeLabs\Veneer\Plugin;
 
@@ -36,8 +38,9 @@ class Context
 
     protected ?Session $io = null;
 
-    public function __construct(?Dir $runDir = null)
-    {
+    public function __construct(
+        ?Dir $runDir = null
+    ) {
         if (!$runDir) {
             if (false === ($dir = getcwd())) {
                 throw Exceptional::Runtime('Unable to get current working directory');
@@ -96,8 +99,9 @@ class Context
      *
      * @return $this
      */
-    public function setSesson(?Session $session): static
-    {
+    public function setSesson(
+        ?Session $session
+    ): static {
         $this->io = $session;
         return $this;
     }
@@ -276,32 +280,36 @@ class Context
     /**
      * Install package
      */
-    public function install(string ...$packages): bool
-    {
+    public function install(
+        string ...$packages
+    ): bool {
         return $this->runNpm('install', ...$packages);
     }
 
     /**
      * Install dev package
      */
-    public function installDev(string ...$packages): bool
-    {
+    public function installDev(
+        string ...$packages
+    ): bool {
         return $this->runNpm(...['install', ...$packages, '--save-dev']);
     }
 
     /**
      * Remove package
      */
-    public function uninstall(string ...$packages): bool
-    {
+    public function uninstall(
+        string ...$packages
+    ): bool {
         return $this->runNpm('remove', ...$packages);
     }
 
     /**
      * Remove package
      */
-    public function uninstallDev(string ...$packages): bool
-    {
+    public function uninstallDev(
+        string ...$packages
+    ): bool {
         return $this->runNpm(...['remove', ...$packages, '--save-dev']);
     }
 
@@ -347,3 +355,7 @@ class Context
         );
     }
 }
+
+
+// Register the Veneer facade
+Veneer::register(Context::class, Overpass::class);
