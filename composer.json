@@ -13,7 +13,6 @@
 
         "decodelabs/atlas": "^0.10.5|^0.11",
         "decodelabs/exceptional": "^0.4",
-        "decodelabs/glitch-support": "^0.4",
         "decodelabs/systemic": "^0.11.6",
         "decodelabs/terminus": "^0.9.1|^0.10"
     },

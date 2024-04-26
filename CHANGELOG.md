@@ -1,3 +1,5 @@
+* Updated dependency list
+
 ## v0.2.6 (2024-04-12)
 * Added support for async modules in bridge evaluate
 * Made PHP8.1 minimum version
