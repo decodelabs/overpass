@@ -14,7 +14,8 @@
         "decodelabs/atlas": "^0.11",
         "decodelabs/exceptional": "^0.4",
         "decodelabs/systemic": "^0.11.6",
-        "decodelabs/terminus": "^0.10"
+        "decodelabs/terminus": "^0.10",
+        "decodelabs/veneer": "^0.11.2"
     },
     "require-dev": {
         "decodelabs/phpstan-decodelabs": "^0.6"

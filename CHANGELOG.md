@@ -1,3 +1,4 @@
+* Removed unneeded LazyLoad binding attribute
 * Updated dependency list
 
 ## v0.2.6 (2024-04-12)
