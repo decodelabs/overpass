@@ -17,8 +17,8 @@ class Overpass implements Proxy
 {
     use ProxyTrait;
 
-    const VENEER = 'DecodeLabs\\Overpass';
-    const VENEER_TARGET = Inst::class;
+    const Veneer = 'DecodeLabs\\Overpass';
+    const VeneerTarget = Inst::class;
 
     public static Inst $instance;
     public static RunDirPlugin $runDir;
