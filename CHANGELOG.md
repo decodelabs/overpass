@@ -1,3 +1,8 @@
+## v0.2.7 (2024-08-21)
+* Updated Veneer dependency and Stub
+* Removed unneeded LazyLoad binding attribute
+* Updated dependency list
+
 ## v0.2.6 (2024-04-12)
 * Added support for async modules in bridge evaluate
 * Made PHP8.1 minimum version
