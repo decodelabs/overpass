@@ -1,3 +1,5 @@
+* Added PHP8.4 to CI workflow
+
 ## v0.2.7 (2024-08-21)
 * Updated Veneer dependency and Stub
 * Removed unneeded LazyLoad binding attribute
