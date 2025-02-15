@@ -14,6 +14,7 @@ use DecodeLabs\Atlas\Dir;
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Systemic;
+use DecodeLabs\Systemic\Controller\Custom as CustomController;
 use DecodeLabs\Terminus\Session;
 
 class Bridge
@@ -109,7 +110,9 @@ class Bridge
 
         /** @phpstan-ignore-next-line */
         if (!$packageFile->exists()) {
-            throw Exceptional::Runtime('NPM install failed: ' . $packageName);
+            throw Exceptional::Runtime(
+                message: 'NPM install failed: ' . $packageName
+            );
         }
 
         /** @phpstan-ignore-next-line */
@@ -132,7 +135,9 @@ class Bridge
         }
 
         if (!$script->exists()) {
-            throw Exceptional::Runtime('Script ' . $script . ' does not exist');
+            throw Exceptional::Runtime(
+                message: 'Script ' . $script . ' does not exist'
+            );
         }
 
         $delineator = '---overpass-' . uniqid('x-', true) . '---';
@@ -147,7 +152,7 @@ class Bridge
         $result = Systemic::start(
             [(string)$this->getNodePath(), __DIR__ . '/evaluate.js'],
             $this->context->rootDir,
-            function ($controller) use ($payload) {
+            function (CustomController $controller) use ($payload) {
                 yield $payload;
                 $controller->closeInput();
                 yield from $controller->capture();
@@ -163,7 +168,9 @@ class Bridge
         $parts = explode($delineator, (string)$output);
 
         if (empty($output = array_pop($parts))) {
-            throw Exceptional::Runtime('Bridge evaluator did not return valid JSON');
+            throw Exceptional::Runtime(
+                message: 'Bridge evaluator did not return valid JSON'
+            );
         }
 
         /** @var array<string, mixed> */

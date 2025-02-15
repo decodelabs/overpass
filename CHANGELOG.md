@@ -1,3 +1,11 @@
+## v0.2.8 (2024-08-21)
+* Upgraded PHPStan to v2
+* Updated dependencies
+* Tidied boolean logic
+* Fixed Exceptional syntax
+* Added PHP8.4 to CI workflow
+* Made PHP8.4 minimum version
+
 ## v0.2.7 (2024-08-21)
 * Updated Veneer dependency and Stub
 * Removed unneeded LazyLoad binding attribute

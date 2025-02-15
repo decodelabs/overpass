@@ -41,7 +41,9 @@ class Context
     ) {
         if (!$runDir) {
             if (false === ($dir = getcwd())) {
-                throw Exceptional::Runtime('Unable to get current working directory');
+                throw Exceptional::Runtime(
+                    message: 'Unable to get current working directory'
+                );
             }
 
             $runDir = Atlas::dir($dir);
@@ -128,7 +130,9 @@ class Context
         if ($path->getPath() === 'node') {
             $path = Atlas::file((string)Systemic::$os->which('node'));
         } elseif (!$path->exists()) {
-            throw Exceptional::Setup('Node binary could not be found');
+            throw Exceptional::Setup(
+                message: 'Node binary could not be found'
+            );
         }
 
         $this->nodeBin = $path;
@@ -164,7 +168,9 @@ class Context
         if ($path->getPath() === 'npm') {
             $path = Atlas::file((string)Systemic::$os->which('npm'));
         } elseif (!$path->exists()) {
-            throw Exceptional::Setup('NPM binary could not be found');
+            throw Exceptional::Setup(
+                message: 'NPM binary could not be found'
+            );
         }
 
         $this->npmBin = $path;
@@ -200,7 +206,9 @@ class Context
         if ($path->getPath() === 'npx') {
             $path = Atlas::file((string)Systemic::$os->which('npx'));
         } elseif (!$path->exists()) {
-            throw Exceptional::Setup('NPX binary could not be found');
+            throw Exceptional::Setup(
+                message: 'NPX binary could not be found'
+            );
         }
 
         $this->npxBin = $path;
@@ -356,4 +364,7 @@ class Context
 
 
 // Register the Veneer facade
-Veneer::register(Context::class, Overpass::class);
+Veneer\Manager::getGlobalManager()->register(
+    Context::class,
+    Overpass::class
+);
