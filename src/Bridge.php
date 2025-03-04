@@ -150,7 +150,7 @@ class Bridge
 
 
         $result = Systemic::start(
-            [(string)$this->getNodePath(), __DIR__ . '/evaluate.js'],
+            [(string)$this->getNodePath(), __DIR__ . '/evaluate.cjs'],
             $this->context->rootDir,
             function (CustomController $controller) use ($payload) {
                 yield $payload;

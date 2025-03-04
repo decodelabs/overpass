@@ -1,3 +1,6 @@
+## v0.2.9 (2025-03-04)
+* Converted evaluate to cjs
+
 ## v0.2.8 (2024-08-21)
 * Upgraded PHPStan to v2
 * Updated dependencies
