@@ -11,8 +11,6 @@
 
 Overpass provides a simple interface for installing dependencies and interacting with native node.js scripts.
 
-_Get news and updates on the [DecodeLabs blog](https://blog.decodelabs.com)._
-
 ---
 
 
