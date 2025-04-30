@@ -11,8 +11,6 @@
 
 Overpass provides a simple interface for installing dependencies and interacting with native node.js scripts.
 
-_Get news and updates on the [DecodeLabs blog](https://blog.decodelabs.com)._
-
 ---
 
 
@@ -24,30 +22,31 @@ composer require decodelabs/overpass
 
 ## Usage
 
-Load a context to work from:
+Load a project to work from:
 
 ```php
-use DecodeLabs\Overpass\Context;
+use DecodeLabs\Overpass\Project;
 
-$context = new Context('path/to/project/');
+$project = new Project('path/to/project/');
 ```
 
-Or use the `Overpass` Veneer frontage to work from `cwd()`.
+If no path is specified, the current working directory will be used.
 Overpass will search back up the file tree for the nearest package.json.
 
 
 ```php
 use DecodeLabs\Overpass;
 
-echo Overpass::$runDir; // Working directory
-echo Overpass::$rootDir; // Parent or current dir containing package.json
-echo Overpass::$packageFile; // Location  of package.json
+echo $project->rootDir; // Parent or current dir containing package.json
+echo $project->packageFile; // Location  of package.json
 
-Overpass::run('myfile.js'); // node myfile.js
-Overpass::runScript('my-script'); // npm run my-script
+$project->run('myfile.js'); // node myfile.js
+$project->runScript('my-script'); // npm run my-script
+$project->runExecutable('vite', 'build'); // vite build
+$project->runPackage('create-react-app'); // npx create-react-app
 
-Overpass::install('package1', 'package2'); // npm install package1 package2
-Overpass::installDev('package1', 'package2'); // npm install package1 package2 --save-dev
+$project->install('package1', 'package2'); // npm install package1 package2
+$project->installDev('package1', 'package2'); // npm install package1 package2 --save-dev
 ```
 
 ### Bridging
@@ -62,9 +61,7 @@ module.exports = function(input) {
 ```
 
 ```php
-use DecodeLabs\Overpass;
-
-$result = Overpass::bridge('myfile.js', 'world'); // 'hello world'
+$result = $project->bridge('myfile.js', 'world'); // 'hello world'
 ```
 
 ## Licensing

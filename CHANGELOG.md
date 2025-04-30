@@ -1,3 +1,12 @@
+## v0.3.0 (2025-04-30)
+* Refactored path handling
+* Renamed Context to Project
+* Implemented Runtime interface structure
+* Implemented PackageManager interface structure
+* Refactored Bridge into Project
+* Removed Terminus dependency
+* Removed Veneer dependency
+
 ## v0.2.9 (2025-03-04)
 * Converted evaluate to cjs
 

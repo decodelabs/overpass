@@ -11,11 +11,11 @@
     "require": {
         "php": "^8.4",
 
+        "decodelabs/archetype": "^0.3.9",
         "decodelabs/atlas": "^0.12",
         "decodelabs/exceptional": "^0.5",
-        "decodelabs/systemic": "^0.11.6",
-        "decodelabs/terminus": "^0.11",
-        "decodelabs/veneer": "^0.12.1"
+        "decodelabs/monarch": "^0.1.2",
+        "decodelabs/systemic": "^0.11.6"
     },
     "require-dev": {
         "decodelabs/phpstan-decodelabs": "^0.7"
@@ -23,14 +23,11 @@
     "autoload": {
         "psr-4": {
             "DecodeLabs\\Overpass\\": "src/"
-        },
-        "files": [
-            "src/Context.php"
-        ]
+        }
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.2.x-dev"
+            "dev-develop": "0.3.x-dev"
         }
     },
     "config": {
