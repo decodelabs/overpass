@@ -16,7 +16,6 @@ use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Monarch;
 use DecodeLabs\Overpass\Runtime\Node as NodeRuntime;
-use DecodeLabs\Systemic;
 
 class Project
 {
