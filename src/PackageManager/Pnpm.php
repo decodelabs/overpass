@@ -24,7 +24,7 @@ class Pnpm implements PackageManager
         string ...$args
     ): bool {
         return Systemic::run(
-            [$project->getBinaryPath($this->binary), '--loglevel=error', $name, ...$args],
+            [$project->getBinaryPath($this->binary), $name, ...$args],
             $project->rootDir
         );
     }
