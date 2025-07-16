@@ -19,12 +19,12 @@ use DecodeLabs\Overpass\Runtime\Node as NodeRuntime;
 
 class Project
 {
-    protected(set) Dir $rootDir;
-    protected(set) File $packageFile;
+    public protected(set) Dir $rootDir;
+    public protected(set) File $packageFile;
 
     public Runtime $runtime {
         get {
-            if(!isset($this->runtime)) {
+            if (!isset($this->runtime)) {
                 $this->runtime = new NodeRuntime();
             }
 
@@ -33,7 +33,7 @@ class Project
         set(
             string|Runtime $runtime
         ) {
-            if(is_string($runtime)) {
+            if (is_string($runtime)) {
                 $class = Archetype::resolve(Runtime::class, $runtime);
                 $runtime = new $class($this);
             }
@@ -44,7 +44,7 @@ class Project
 
     public PackageManager $packageManager {
         get {
-            if(isset($this->packageManager)) {
+            if (isset($this->packageManager)) {
                 return $this->packageManager;
             }
 
@@ -104,7 +104,7 @@ class Project
         string $binary,
         string|File $path
     ): void {
-        if($path instanceof File) {
+        if ($path instanceof File) {
             $path = $path->path;
         }
 
@@ -148,7 +148,7 @@ class Project
         string|File $script,
         string|array|int|float|null ...$args
     ): mixed {
-        if(!$this->isInitialised()) {
+        if (!$this->isInitialised()) {
             throw Exceptional::Runtime(
                 message: 'Project not inside js package'
             );

@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace DecodeLabs\Overpass;
 
 use DecodeLabs\Systemic;
-use DecodeLabs\Systemic\Result;
 use DecodeLabs\Systemic\Controller\Custom as CustomController;
+use DecodeLabs\Systemic\Result;
 
 trait RuntimeTrait
 {
