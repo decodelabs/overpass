@@ -9,13 +9,13 @@ declare(strict_types=1);
 
 namespace DecodeLabs\Overpass;
 
-use DecodeLabs\Archetype;
 use DecodeLabs\Atlas;
 use DecodeLabs\Atlas\Dir;
 use DecodeLabs\Atlas\File;
 use DecodeLabs\Exceptional;
 use DecodeLabs\Monarch;
 use DecodeLabs\Overpass\Runtime\Node as NodeRuntime;
+use DecodeLabs\Systemic;
 
 class Project
 {
@@ -25,20 +25,10 @@ class Project
     public Runtime $runtime {
         get {
             if (!isset($this->runtime)) {
-                $this->runtime = new NodeRuntime();
+                $this->runtime = new NodeRuntime($this->systemic);
             }
 
             return $this->runtime;
-        }
-        set(
-            string|Runtime $runtime
-        ) {
-            if (is_string($runtime)) {
-                $class = Archetype::resolve(Runtime::class, $runtime);
-                $runtime = new $class($this);
-            }
-
-            $this->runtime = $runtime;
         }
     }
 
@@ -58,9 +48,10 @@ class Project
     protected array $paths = [];
 
     public function __construct(
-        ?Dir $dir = null
+        ?Dir $dir,
+        protected Systemic $systemic
     ) {
-        $dir ??= Atlas::dir(Monarch::$paths->working);
+        $dir ??= Atlas::getDir(Monarch::getPaths()->working);
         $this->packageFile = $this->findPackageJson($dir);
         $this->rootDir = $this->packageFile->getParent() ?? $dir;
     }
@@ -118,7 +109,7 @@ class Project
             return $this->paths[$binary];
         }
 
-        return Monarch::$paths->resolve($binary);
+        return Monarch::getPaths()->resolve($binary);
     }
 
     public function removeBinaryPath(
@@ -155,7 +146,7 @@ class Project
         }
 
         if (!$script instanceof File) {
-            $script = Atlas::file($script);
+            $script = Atlas::getFile($script);
         }
 
         if (!$script->exists()) {

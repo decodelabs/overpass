@@ -15,12 +15,17 @@ use DecodeLabs\Systemic\Result;
 
 trait RuntimeTrait
 {
+    public function __construct(
+        protected Systemic $systemic
+    ) {
+    }
+
     public function run(
         Project $project,
         string $name,
         string ...$args
     ): bool {
-        return Systemic::run(
+        return $this->systemic->run(
             [
                 $project->getBinaryPath($this->binary),
                 $name,
@@ -34,7 +39,7 @@ trait RuntimeTrait
         Project $project,
         string $payload
     ): Result {
-        return Systemic::start(
+        return $this->systemic->start(
             [$project->getBinaryPath($this->binary), __DIR__ . '/evaluate.cjs'],
             $project->rootDir,
             function (CustomController $controller) use ($payload) {

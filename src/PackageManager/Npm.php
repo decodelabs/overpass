@@ -18,12 +18,17 @@ class Npm implements PackageManager
     public string $name = 'npm';
     public string $binary = 'npm';
 
+    public function __construct(
+        protected Systemic $systemic
+    ) {
+    }
+
     protected function run(
         Project $project,
         string $name,
         string ...$args
     ): bool {
-        return Systemic::run(
+        return $this->systemic->run(
             [$project->getBinaryPath($this->binary), '--loglevel=error', $name, ...$args],
             $project->rootDir
         );
@@ -34,7 +39,7 @@ class Npm implements PackageManager
         string $name,
         string ...$args
     ): bool {
-        return Systemic::command([$project->getBinaryPath($this->binary), 'run', $name, ...$args])
+        return $this->systemic->command([$project->getBinaryPath($this->binary), 'run', $name, ...$args])
             ->setWorkingDirectory($project->rootDir)
             ->addSignal('SIGINT', 'SIGTERM', 'SIGQUIT')
             ->run();
@@ -45,7 +50,7 @@ class Npm implements PackageManager
         string $name,
         string ...$args
     ): bool {
-        return Systemic::command([$project->getBinaryPath('npx'), $name, ...$args])
+        return $this->systemic->command([$project->getBinaryPath('npx'), $name, ...$args])
             ->setWorkingDirectory($project->rootDir)
             ->addSignal('SIGINT', 'SIGTERM', 'SIGQUIT')
             ->run();

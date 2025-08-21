@@ -18,12 +18,17 @@ class Pnpm implements PackageManager
     public string $name = 'pnpm';
     public string $binary = 'pnpm';
 
+    public function __construct(
+        protected Systemic $systemic
+    ) {
+    }
+
     protected function run(
         Project $project,
         string $name,
         string ...$args
     ): bool {
-        return Systemic::run(
+        return $this->systemic->run(
             [$project->getBinaryPath($this->binary), $name, ...$args],
             $project->rootDir
         );
@@ -35,7 +40,7 @@ class Pnpm implements PackageManager
         string $name,
         string ...$args
     ): bool {
-        return Systemic::command([$project->getBinaryPath($this->binary), $command, $name, ...$args])
+        return $this->systemic->command([$project->getBinaryPath($this->binary), $command, $name, ...$args])
             ->setWorkingDirectory($project->rootDir)
             ->addSignal('SIGINT', 'SIGTERM', 'SIGQUIT')
             ->run();

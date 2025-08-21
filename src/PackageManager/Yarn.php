@@ -18,12 +18,17 @@ class Yarn implements PackageManager
     public string $name = 'Yarn';
     public string $binary = 'yarn';
 
+    public function __construct(
+        protected Systemic $systemic
+    ) {
+    }
+
     protected function run(
         Project $project,
         string $name,
         string ...$args
     ): bool {
-        return Systemic::run(
+        return $this->systemic->run(
             [$project->getBinaryPath($this->binary), '--loglevel=error', $name, ...$args],
             $project->rootDir
         );
@@ -42,7 +47,7 @@ class Yarn implements PackageManager
         string $name,
         string ...$args
     ): bool {
-        return Systemic::command([$project->getBinaryPath($this->binary), 'run', $name, ...$args])
+        return $this->systemic->command([$project->getBinaryPath($this->binary), 'run', $name, ...$args])
             ->setWorkingDirectory($project->rootDir)
             ->addSignal('SIGINT', 'SIGTERM', 'SIGQUIT')
             ->run();
@@ -53,7 +58,7 @@ class Yarn implements PackageManager
         string $name,
         string ...$args
     ): bool {
-        return Systemic::command([$project->getBinaryPath($this->binary), 'dlx', $name, ...$args])
+        return $this->systemic->command([$project->getBinaryPath($this->binary), 'dlx', $name, ...$args])
             ->setWorkingDirectory($project->rootDir)
             ->addSignal('SIGINT', 'SIGTERM', 'SIGQUIT')
             ->run();

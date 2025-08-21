@@ -25,9 +25,11 @@ composer require decodelabs/overpass
 Load a project to work from:
 
 ```php
+use DecodeLabs\Monarch;
 use DecodeLabs\Overpass\Project;
+use DecodeLabs\Systemic;
 
-$project = new Project('path/to/project/');
+$project = new Project('path/to/project/', Monarch::getService(Systemic::class));
 ```
 
 If no path is specified, the current working directory will be used.
@@ -35,8 +37,6 @@ Overpass will search back up the file tree for the nearest package.json.
 
 
 ```php
-use DecodeLabs\Overpass;
-
 echo $project->rootDir; // Parent or current dir containing package.json
 echo $project->packageFile; // Location  of package.json
 

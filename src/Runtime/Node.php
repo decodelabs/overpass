@@ -28,17 +28,17 @@ class Node implements Runtime
         Project $project
     ): PackageManager {
         if ($project->rootDir->getFile('pnpm-lock.yaml')->exists()) {
-            return new Pnpm();
+            return new Pnpm($this->systemic);
         }
 
         if ($project->rootDir->getFile('package-lock.json')->exists()) {
-            return new Npm();
+            return new Npm($this->systemic);
         }
 
         if ($project->rootDir->getFile('yarn.lock')->exists()) {
-            return new Yarn();
+            return new Yarn($this->systemic);
         }
 
-        return new Npm();
+        return new Npm($this->systemic);
     }
 }
