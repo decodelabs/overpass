@@ -16,6 +16,10 @@ Overpass provides a simple interface for installing dependencies and interacting
 
 ## Installation
 
+This package requires PHP 8.4 or higher.
+
+Install via Composer:
+
 ```bash
 composer require decodelabs/overpass
 ```
