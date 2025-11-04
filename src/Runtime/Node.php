@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @package Overpass
- * @license http://opensource.org/licenses/MIT
+ * Overpass
+ * @license https://opensource.org/licenses/MIT
  */
 
 declare(strict_types=1);
